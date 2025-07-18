@@ -3,7 +3,7 @@ from __future__ import annotations as _annotations
 import random
 from pydantic import BaseModel
 import string
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from agents import (
     Agent,
@@ -141,7 +141,7 @@ guardrail_agent = Agent(
 
 @input_guardrail(name="Relevance Guardrail")
 async def relevance_guardrail(
-    context: RunContextWrapper[None], agent: Agent, input: List[TResponseInputItem]
+    context: RunContextWrapper[None], agent: Agent, input: Union[str, List[TResponseInputItem]]
 ) -> GuardrailFunctionOutput:
     """Guardrail to check if input is relevant to airline topics."""
     result = await Runner.run(guardrail_agent, input, context=context.context)
@@ -171,7 +171,7 @@ jailbreak_guardrail_agent = Agent(
 
 @input_guardrail(name="Jailbreak Guardrail")
 async def jailbreak_guardrail(
-    context: RunContextWrapper[None], agent: Agent, input: List[TResponseInputItem]
+    context: RunContextWrapper[None], agent: Agent, input: Union[str, List[TResponseInputItem]]
 ) -> GuardrailFunctionOutput:
     """Guardrail to detect jailbreak attempts."""
     result = await Runner.run(jailbreak_guardrail_agent, input, context=context.context)
