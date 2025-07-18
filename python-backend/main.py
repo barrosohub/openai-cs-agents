@@ -3,6 +3,7 @@ from __future__ import annotations as _annotations
 import random
 from pydantic import BaseModel
 import string
+from typing import Optional, List
 
 from agents import (
     Agent,
@@ -22,11 +23,11 @@ from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
 
 class AirlineAgentContext(BaseModel):
     """Context for airline customer service agents."""
-    passenger_name: str | None = None
-    confirmation_number: str | None = None
-    seat_number: str | None = None
-    flight_number: str | None = None
-    account_number: str | None = None  # Account number associated with the customer
+    passenger_name: Optional[str] = None
+    confirmation_number: Optional[str] = None
+    seat_number: Optional[str] = None
+    flight_number: Optional[str] = None
+    account_number: Optional[str] = None  # Account number associated with the customer
 
 def create_initial_context() -> AirlineAgentContext:
     """
@@ -140,7 +141,7 @@ guardrail_agent = Agent(
 
 @input_guardrail(name="Relevance Guardrail")
 async def relevance_guardrail(
-    context: RunContextWrapper[None], agent: Agent, input: str | list[TResponseInputItem]
+    context: RunContextWrapper[None], agent: Agent, input: List[TResponseInputItem]
 ) -> GuardrailFunctionOutput:
     """Guardrail to check if input is relevant to airline topics."""
     result = await Runner.run(guardrail_agent, input, context=context.context)
@@ -170,7 +171,7 @@ jailbreak_guardrail_agent = Agent(
 
 @input_guardrail(name="Jailbreak Guardrail")
 async def jailbreak_guardrail(
-    context: RunContextWrapper[None], agent: Agent, input: str | list[TResponseInputItem]
+    context: RunContextWrapper[None], agent: Agent, input: List[TResponseInputItem]
 ) -> GuardrailFunctionOutput:
     """Guardrail to detect jailbreak attempts."""
     result = await Runner.run(jailbreak_guardrail_agent, input, context=context.context)
