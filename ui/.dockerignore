@@ -1,0 +1,30 @@
+# Node.js specific
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Next.js specific
+.next/
+out/
+.vercel
+.env*.local
+
+# Development files
+.git
+.gitignore
+README.md
+*.md
+.vscode/
+.idea/
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage/
+.nyc_output
