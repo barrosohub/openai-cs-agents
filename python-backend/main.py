@@ -1,4 +1,7 @@
+
 from __future__ import annotations as _annotations
+from dotenv import load_dotenv
+load_dotenv()
 
 import random
 from pydantic import BaseModel
