@@ -49,10 +49,11 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     ports:
       - "127.0.0.1:3000:3000"
-    volumes:
-      - ./ui:/app
-      - nextjs_modules:/app/node_modules
-      - nextjs_cache:/app/.next
+    # No volumes for now - all code inside container for stability
+    # volumes:
+    #   - ./ui:/app
+    #   - nextjs_modules:/app/node_modules
+    #   - nextjs_cache:/app/.next
     depends_on:
       backend:
         condition: service_healthy
