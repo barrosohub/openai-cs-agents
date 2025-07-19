@@ -1,0 +1,14 @@
+**/.git
+**/node_modules
+**/.next
+**/__pycache__
+**/*.log
+**/README.md
+.env*
+**/.DS_Store
+**/.vscode
+**/.idea
+**/coverage
+**/dist
+**/build
+**/.cache

@@ -1,29 +1,42 @@
-FROM node:22-alpine AS base
+# syntax=docker/dockerfile:1
+FROM node:22-alpine
+
+# Metadata
+LABEL org.opencontainers.image.title="Next.js Frontend" \
+      org.opencontainers.image.description="Next.js development frontend" \
+      org.opencontainers.image.authors="your-email@company.com" \
+      org.opencontainers.image.version="1.0.0"
+
+# Install dependencies necessárias
+RUN apk add --no-cache \
+    libc6-compat \
+    curl && \
+    apk upgrade
 
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Security: Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --ingroup nodejs nextjs
 
-FROM base AS deps
+# Copy package files PRIMEIRO para melhor cache
+COPY package.json package-lock.json ./
 
-RUN apk add --no-cache libc6-compat
+# Install ALL dependencies (incluindo dev para desenvolvimento)
+RUN npm ci && \
+    npm cache clean --force
 
-COPY package*.json ./
+# Copy source code com ownership correto
+COPY --chown=nextjs:nodejs . .
 
-RUN npm ci --only=production && npm cache clean --force
-
-FROM base AS dev
-
-COPY package*.json ./
-RUN npm ci
-
-COPY . .
-
-RUN chown -R nextjs:nodejs /app
-
+# Switch to non-root user
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev:next"]
+# Health check SIMPLES que funciona
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:3000 || exit 1
+
+# Comando padrão Next.js
+CMD ["npm", "run", "dev"]
