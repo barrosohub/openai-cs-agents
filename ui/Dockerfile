@@ -1,12 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM node:22-alpine
 
-# Metadata
-LABEL org.opencontainers.image.title="Next.js Frontend" \
-      org.opencontainers.image.description="Next.js development frontend" \
-      org.opencontainers.image.authors="your-email@company.com" \
-      org.opencontainers.image.version="1.0.0"
-
 # Install dependencies necessárias
 RUN apk add --no-cache \
     libc6-compat \
@@ -38,5 +32,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:3000 || exit 1
 
-# Comando padrão Next.js
-CMD ["npm", "run", "dev"]
+# Comando padrão Next.js apenas (backend roda separado)
+CMD ["npm", "run", "dev:next"]
