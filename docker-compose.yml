@@ -23,7 +23,7 @@ services:
       start_period: 40s
     security_opt:
       - no-new-privileges:true
-      - seccomp:unconfined
+      - seccomp:default
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=100m
     deploy:

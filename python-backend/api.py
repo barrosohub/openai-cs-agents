@@ -347,6 +347,5 @@ async def chat_endpoint(req: ChatRequest):
             guardrails=final_guardrails,
         )
     except Exception as e:
-        print(f"Error in chat endpoint: {e}")
         logger.exception("Error in chat endpoint")
         raise HTTPException(status_code=500, detail=str(e))
